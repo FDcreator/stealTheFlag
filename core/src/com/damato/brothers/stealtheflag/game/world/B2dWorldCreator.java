@@ -1,0 +1,40 @@
+package com.damato.brothers.stealtheflag.game.world;
+
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.physics.box2d.*;
+
+public class B2dWorldCreator {
+/*
+    public B2dWorldCreator(GameScreen gameScreen){
+        World world = gameScreen.getWorld();
+        TiledMap map = gameScreen.getMap();
+        //colisores
+        //configurações do corpo
+        BodyDef bdef = new BodyDef();
+        //verificar a disposição dos conteiners
+        PolygonShape polyshap = new PolygonShape();
+        //configurações dos objetos montados ouu imóveis
+        FixtureDef fixdef = new FixtureDef();
+        //corpo à ser adicionado ao mundo
+        Body body;
+
+        //para todos object no layer (chão) que tenha tipo de retângulo faça
+        for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+            //tipo de corpo estático
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set((rectangle.getX() + rectangle.getWidth()/2)/GameMain.PPM,
+                    (rectangle.getY() + rectangle.getHeight()/2)/GameMain.PPM);
+
+            //adicionando objeto ao mundo
+            body = world.createBody(bdef);
+            polyshap.setAsBox((rectangle.getWidth()/2)/GameMain.PPM, (rectangle.getHeight()/2)/GameMain.PPM);
+            fixdef.shape = polyshap;
+            fixdef.filter.categoryBits = GameMain.GROUND_BIT;
+            body.createFixture(fixdef);
+        }
+    }*/
+}
