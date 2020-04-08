@@ -24,7 +24,7 @@ public class B2dWorldCreator {
         Body body;
 
         //para todos object no layer (chão) que tenha tipo de retângulo faça
-        for (MapObject object : map.getLayers().get("ground").getObjects().getByType(RectangleMapObject.class)){
+        for (MapObject object : map.getLayers().get("grounds").getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             //tipo de corpo estático
             bdef.type = BodyDef.BodyType.StaticBody;
