@@ -1,6 +1,8 @@
 package com.damato.brothers.stealtheflag.game.screens;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.damato.brothers.stealtheflag.game.utils.GameUtils;
 
 public class MenuScreen implements Screen {
 
@@ -12,7 +14,7 @@ public class MenuScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		// TODO Auto-generated method stub
+		GameUtils.clearScreen(Color.SKY);
 		
 	}
 
