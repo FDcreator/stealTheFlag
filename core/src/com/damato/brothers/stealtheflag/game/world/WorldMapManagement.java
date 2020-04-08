@@ -8,7 +8,7 @@ public class WorldMapManagement {
         private TmxMapLoader maploader;
         private TiledMap tileMap;
         private int level;
-        public WorldMapManagement(int map, GameMain gameMain){
+        public WorldMapManagement(int map){
             this.level = map;
             maploader = new TmxMapLoader();
             switch (map){
