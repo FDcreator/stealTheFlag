@@ -4,16 +4,16 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.damato.brothers.stealtheflag.game.GameMain;
 
-public class WorldLevelManagement {
+public class WorldMapManagement {
         private TmxMapLoader maploader;
-        private TiledMap map;
+        private TiledMap tileMap;
         private int level;
-        public WorldLevelManagement(int level, GameMain gameMain){
-            this.level = level;
+        public WorldMapManagement(int map){
+            this.level = map;
             maploader = new TmxMapLoader();
-            switch (level){
+            switch (map){
                 case 1:
-                    map = maploader.load("maps/map01.tmx");
+                    tileMap = maploader.load("maps/map01.tmx");
                     break;
                /* case 2:
                     map = maploader.load("covid_instance_map/map02.tmx");
@@ -26,6 +26,6 @@ public class WorldLevelManagement {
             }
         }
         public TiledMap getWorldMap(){
-            return map;
+            return tileMap;
         }
     }

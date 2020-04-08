@@ -5,9 +5,11 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
+import com.damato.brothers.stealtheflag.game.GameMain;
+import com.damato.brothers.stealtheflag.game.screens.GameScreen;
 
 public class B2dWorldCreator {
-/*
+
     public B2dWorldCreator(GameScreen gameScreen){
         World world = gameScreen.getWorld();
         TiledMap map = gameScreen.getMap();
@@ -22,7 +24,7 @@ public class B2dWorldCreator {
         Body body;
 
         //para todos object no layer (chão) que tenha tipo de retângulo faça
-        for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
+        for (MapObject object : map.getLayers().get("ground").getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             //tipo de corpo estático
             bdef.type = BodyDef.BodyType.StaticBody;
@@ -36,5 +38,5 @@ public class B2dWorldCreator {
             fixdef.filter.categoryBits = GameMain.GROUND_BIT;
             body.createFixture(fixdef);
         }
-    }*/
+    }
 }
