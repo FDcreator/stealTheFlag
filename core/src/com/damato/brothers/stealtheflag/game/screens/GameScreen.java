@@ -1,7 +1,6 @@
 package com.damato.brothers.stealtheflag.game.screens;
 
 import com.badlogic.gdx.Screen;
-<<<<<<< HEAD
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -35,80 +34,64 @@ public class GameScreen implements Screen{
 		gameMain = this.gameMain;
 
 		gamecam = new OrthographicCamera();
-		gamePort = new FitViewport(gameMain.V_WIDTH/gameMain.PPM,
-				gameMain.V_HEIGHT/gameMain.PPM);
+		gamePort = new FitViewport(gameMain.V_WIDTH / gameMain.PPM,
+				gameMain.V_HEIGHT / gameMain.PPM);
 
 		wmpm = new WorldMapManagement(1);
 		map = wmpm.getWorldMap();
-		renderer =	new OrthogonalTiledMapRenderer(map,1/gameMain.PPM);
+		renderer = new OrthogonalTiledMapRenderer(map, 1 / gameMain.PPM);
 
 		creator = new B2dWorldCreator(this);
-		world = new World(new Vector2(0,-10),true);
+		world = new World(new Vector2(0, -10), true);
 		b2dr = new Box2DDebugRenderer();
 
 		world.setContactListener(new WorldContactListener());
-=======
-
-public class GameScreen implements Screen{
-	
-	public GameScreen() {
-	
->>>>>>> master
 	}
-
 	@Override
-	public void show() {
+	public void show () {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void render(float delta) {
+	public void render ( float delta){
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void resize(int width, int height) {
+	public void resize ( int width, int height){
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void pause() {
+	public void pause () {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void resume() {
+	public void resume () {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void hide() {
+	public void hide () {
 		dispose();
 	}
 
 	@Override
-	public void dispose() {
+	public void dispose () {
 		// TODO Auto-generated method stub
-		
-	}
-<<<<<<< HEAD
 
-	public TiledMap getMap(){
-		return null;
 	}
-	public World getWorld(){
-		return null;
+
+	public TiledMap getMap () {
+		return map;
 	}
-=======
-	
->>>>>>> master
-
-	
-	
-
+	public World getWorld () {
+		return world;
+	}
 }
