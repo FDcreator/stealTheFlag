@@ -1,7 +1,10 @@
 package com.damato.brothers.stealtheflag.game;
 
 import com.badlogic.gdx.Game;
+<<<<<<< HEAD
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+=======
+>>>>>>> master
 import com.damato.brothers.stealtheflag.game.screens.MenuScreen;
 
 public class GameMain extends Game {

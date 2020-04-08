@@ -1,6 +1,7 @@
 package com.damato.brothers.stealtheflag.game.screens;
 
 import com.badlogic.gdx.Screen;
+<<<<<<< HEAD
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -46,6 +47,13 @@ public class GameScreen implements Screen{
 		b2dr = new Box2DDebugRenderer();
 
 		world.setContactListener(new WorldContactListener());
+=======
+
+public class GameScreen implements Screen{
+	
+	public GameScreen() {
+	
+>>>>>>> master
 	}
 
 	@Override
@@ -88,6 +96,7 @@ public class GameScreen implements Screen{
 		// TODO Auto-generated method stub
 		
 	}
+<<<<<<< HEAD
 
 	public TiledMap getMap(){
 		return null;
@@ -95,6 +104,9 @@ public class GameScreen implements Screen{
 	public World getWorld(){
 		return null;
 	}
+=======
+	
+>>>>>>> master
 
 	
 	
