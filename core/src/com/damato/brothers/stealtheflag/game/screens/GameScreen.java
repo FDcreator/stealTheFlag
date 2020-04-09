@@ -41,8 +41,8 @@ public class GameScreen implements Screen{
 
 		gamecam = new OrthographicCamera();
 		gamecam.setToOrtho(false);
-		gamePort = new FitViewport(gameMain.V_WIDTH / gameMain.PPM,
-				gameMain.V_HEIGHT / gameMain.PPM,gamecam);
+		gamePort = new FitViewport(gameMain.V_WIDTH,
+				gameMain.V_HEIGHT);
 		gamecam.position.set(gamePort.getWorldWidth() / 2,
 				gamePort.getWorldHeight() / 2, 0);
 
@@ -65,8 +65,8 @@ public class GameScreen implements Screen{
 	@Override
 	public void render ( float delta){
 		// TODO Auto-generated method stub
-		update(delta);
 		GameUtils.clearScreen();
+		update(delta);
 		renderer.render();
 		b2dr.render(world,gamecam.combined);
 		spriteBatch.setProjectionMatrix(gamecam.combined);
