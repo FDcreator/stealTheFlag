@@ -1,0 +1,25 @@
+{
+	com.badlogic.gdx.graphics.g2d.BitmapFont: {
+		"default": {
+			"file": fonts/default32.fnt,
+		}
+	},
+	com.badlogic.gdx.graphics.Color: {
+		"black": { "hex": #000000 },
+		"white": { "hex": #FFFFFF }
+	},
+	com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+		"user_name": {
+			"font": default,
+			"fontColor": white,
+			"focusedFontColor": black,
+		}
+	},
+	com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+		"sign_in": {
+			"font": default,
+			"fontColor": black,
+		}
+	}
+
+}
