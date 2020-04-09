@@ -42,9 +42,9 @@ public class GameScreen implements Screen{
 		gamecam = new OrthographicCamera();
 		gamecam.setToOrtho(false);
 		gamePort = new FitViewport(gameMain.V_WIDTH / gameMain.PPM,
-				gameMain.V_HEIGHT / gameMain.PPM);
-		gamecam.position.set(gamePort.getWorldWidth(),
-				gamePort.getWorldHeight(), 0);
+				gameMain.V_HEIGHT / gameMain.PPM, gamecam);
+		gamecam.position.set(gamePort.getWorldWidth() / 2,
+				gamePort.getWorldHeight() / 2, 0);
 
 		wmpm = new WorldMapManagement(1);
 		map = wmpm.getWorldMap();
@@ -76,7 +76,7 @@ public class GameScreen implements Screen{
 	@Override
 	public void resize ( int width, int height){
 		// TODO Auto-generated method stub
-		gamePort.update(width,height, true);
+		gamePort.update(width,height);
 	}
 
 	@Override
