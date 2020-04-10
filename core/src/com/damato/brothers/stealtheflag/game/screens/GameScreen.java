@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.damato.brothers.stealtheflag.game.GameMain;
+import com.damato.brothers.stealtheflag.game.sprites.Player;
 import com.damato.brothers.stealtheflag.game.utils.GameUtils;
 import com.damato.brothers.stealtheflag.game.world.B2dWorldCreator;
 import com.damato.brothers.stealtheflag.game.world.WorldContactListener;
@@ -32,6 +33,8 @@ public class GameScreen implements Screen{
 	private World world;
 	private Box2DDebugRenderer b2dr;
 	private B2dWorldCreator creator;
+
+	private Player player;
 
 	private SpriteBatch spriteBatch;
 
@@ -55,6 +58,8 @@ public class GameScreen implements Screen{
 		creator = new B2dWorldCreator(this);
 
 		world.setContactListener(new WorldContactListener());
+
+		player = new Player(this);
 	}
 	@Override
 	public void show () {
@@ -103,6 +108,7 @@ public class GameScreen implements Screen{
 		map.dispose();
 		world.dispose();
 		b2dr.dispose();
+		player.dispose();
 	}
 
 	public TiledMap getMap () {
@@ -114,14 +120,35 @@ public class GameScreen implements Screen{
 
 	public void update(float dt){
 		handleInput(dt);
+		//takes 1 step in the physics simulation(60 times per second)
+		world.step(1 / 60f, 6, 2);
+		player.update(dt);
 		gamecam.update();
 		renderer.setView(gamecam);
 	}
 	public void handleInput(float dt){
+
+		if (!player.isDead()){
+			if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) ||
+					Gdx.input.isKeyJustPressed(Input.Keys.UP)){
+				player.jump();
+			}
+			if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)
+					&& player.b2body.getLinearVelocity().x <= 3){
+				player.b2body.applyLinearImpulse(new Vector2(0.1f, 0),
+						player.b2body.getWorldCenter(), true);
+			}else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)
+					&& player.b2body.getLinearVelocity().x >= -3){
+				player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0),
+						player.b2body.getWorldCenter(), true);
+			}
+		}
 		if (Gdx.input.isKeyPressed(Input.Keys.Q)){
 			gamecam.zoom +=1/GameMain.PPM;
 		}else if (Gdx.input.isKeyPressed(Input.Keys.E)){
 			gamecam.zoom -=1/GameMain.PPM;
 		}
+		gamecam.position.x = player.b2body.getPosition().x;
+		gamecam.position.y = player.b2body.getPosition().y;
 	}
 }
