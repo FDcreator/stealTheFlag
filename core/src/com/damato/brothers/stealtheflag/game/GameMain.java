@@ -1,6 +1,7 @@
 package com.damato.brothers.stealtheflag.game;
 
 import com.badlogic.gdx.Game;
+import com.damato.brothers.stealtheflag.game.connection.ServerManagement;
 import com.damato.brothers.stealtheflag.game.screens.GameScreen;
 import com.damato.brothers.stealtheflag.game.screens.MenuScreen;
 
@@ -14,12 +15,13 @@ public class GameMain extends Game {
 	//for fixtures data, help in colision world
 	public static final short PLAYER_BIT = 1;
 	public static final short GROUND_BIT = 2;
+	
+	public ServerManagement server;
 
 	@Override
 	public void create() {	
 		
-		//setScreen(new MenuScreen(this));
-
-		setScreen(new GameScreen(this));
+		this.server = new ServerManagement();
+		setScreen(new MenuScreen(this));
 	}
 }

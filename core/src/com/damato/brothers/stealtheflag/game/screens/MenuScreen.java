@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -29,6 +31,8 @@ public class MenuScreen implements Screen {
 	private Stage stage;
 	private Skin skin;
 	
+	private boolean callGameScreen = false;
+	
 	public MenuScreen(GameMain game) {
 		this.game = game;
 	}
@@ -46,7 +50,17 @@ public class MenuScreen implements Screen {
 		this.skin = new Skin(Gdx.files.internal(AssetPath.SKIN_MENU_PATH));
 		
 		createTextField();
-		createButton();
+		createButton().addListener(new InputListener() {
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				
+				if ( button == Input.Buttons.LEFT ) {
+					isCallGameScreen();
+				}
+				
+				return true;
+			}
+		});
 		
 		Gdx.input.setInputProcessor(stage);
 	}
@@ -54,8 +68,11 @@ public class MenuScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		GameUtils.clearScreen(Color.SKY);
-		
 		updateStage(delta);
+		
+		if ( callGameScreen ) {
+			game.setScreen(new GameScreen(game));
+		}
 			
 	}
 
@@ -118,6 +135,9 @@ public class MenuScreen implements Screen {
 		stage.act(delta);
 		stage.draw();
 	}
-
+	
+	public void isCallGameScreen() {
+		callGameScreen = true;
+	}
 	
 }

@@ -1,0 +1,16 @@
+{
+  "name": "GameServer",
+  "version": "1.0.0",
+  "description": "O server vai fazer a comunicacao entre usuarios, passando informacoes de cada acao e caracteristicas de cada jogador",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "D'Amato Brothers",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  }
+}
