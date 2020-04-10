@@ -53,7 +53,7 @@ public class GameScreen implements Screen{
 		map = wmpm.getWorldMap();
 		renderer = new OrthogonalTiledMapRenderer(map, 1 / gameMain.PPM);
 
-		world = new World(new Vector2(0, -10), true);
+		world = new World(new Vector2(0, -10), false);
 		b2dr = new Box2DDebugRenderer();
 		creator = new B2dWorldCreator(this);
 
@@ -129,18 +129,19 @@ public class GameScreen implements Screen{
 	public void handleInput(float dt){
 
 		if (!player.isDead()){
+
 			if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) ||
 					Gdx.input.isKeyJustPressed(Input.Keys.UP)){
-				player.jump();
+				player.jump(dt);
+			}else if (Gdx.input.isKeyPressed(Input.Keys.UP) && player.getState() == Player.State.JUMPING) {
+				player.jump(dt);
 			}
-			if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)
-					&& player.b2body.getLinearVelocity().x <= 3){
-				player.b2body.applyLinearImpulse(new Vector2(0.1f, 0),
-						player.b2body.getWorldCenter(), true);
-			}else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)
-					&& player.b2body.getLinearVelocity().x >= -3){
-				player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0),
-						player.b2body.getWorldCenter(), true);
+			if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+				player.b2body.setTransform(player.b2body.getPosition().x + 0.05f + dt,
+						player.b2body.getPosition().y,0);
+			}else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+				player.b2body.setTransform(player.b2body.getPosition().x -(0.05f + dt),
+						player.b2body.getPosition().y,0);
 			}
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.Q)){
