@@ -38,5 +38,19 @@ public class B2dWorldCreator {
             fixdef.filter.categoryBits = GameMain.GROUND_BIT;
             body.createFixture(fixdef);
         }
+        for (MapObject object : map.getLayers().get("walls").getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+            //tipo de corpo estático
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set((rectangle.getX() + rectangle.getWidth()/2)/GameMain.PPM,
+                    (rectangle.getY() + rectangle.getHeight()/2)/GameMain.PPM);
+
+            //adicionando objeto ao mundo
+            body = world.createBody(bdef);
+            polyshap.setAsBox((rectangle.getWidth()/2)/GameMain.PPM, (rectangle.getHeight()/2)/GameMain.PPM);
+            fixdef.shape = polyshap;
+            fixdef.filter.categoryBits = GameMain.WALL_BIT;
+            body.createFixture(fixdef);
+        }
     }
 }

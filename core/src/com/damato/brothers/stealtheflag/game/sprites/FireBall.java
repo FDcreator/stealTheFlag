@@ -37,7 +37,6 @@ public class FireBall extends Sprite {
             b2body.applyLinearImpulse(new Vector2(-50,0),b2body.getWorldCenter(),true);
         }
 
-
         setBounds(0,0,8/ GameMain.PPM, 8/GameMain.PPM);
     }
     public void update(float dt){
@@ -62,7 +61,7 @@ public class FireBall extends Sprite {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(4/ GameMain.PPM,4/ GameMain.PPM);
         fixdef.filter.categoryBits = GameMain.FIREBALL_BIT;
-        fixdef.filter.maskBits = GameMain.GROUND_BIT | GameMain.PLAYER_BIT;
+        fixdef.filter.maskBits = GameMain.GROUND_BIT | GameMain.PLAYER_BIT | GameMain.WALL_BIT;
         fixdef.shape = shape;
 
         b2body.createFixture(fixdef).setUserData(this);

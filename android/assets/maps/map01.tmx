@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="left-down" width="256" height="24" tilewidth="32" tileheight="32" nextobjectid="28">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="left-down" width="256" height="24" tilewidth="32" tileheight="32" nextobjectid="33">
  <layer name="background" width="256" height="24">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -29,7 +29,7 @@
 </data>
  </layer>
  <objectgroup color="#550000" name="grounds">
-  <object id="1" x="0" y="704" width="8152" height="64"/>
+  <object id="1" x="0" y="704" width="8192" height="64"/>
   <object id="12" x="544" y="224" width="1376" height="32"/>
   <object id="13" x="352" y="512" width="1056" height="32"/>
   <object id="15" x="2688" y="512" width="1056" height="32"/>
@@ -41,8 +41,12 @@
   <object id="22" x="4448" y="512" width="1056" height="32"/>
   <object id="23" x="4640" y="224" width="1376" height="32"/>
   <object id="24" x="3840" y="352" width="512" height="32"/>
-  <object id="26" x="0" y="352" width="256" height="32"/>
-  <object id="27" x="7904" y="352" width="256" height="32"/>
+  <object id="26" x="32" y="352" width="224.667" height="32"/>
+  <object id="27" x="7936" y="352" width="224" height="32"/>
+ </objectgroup>
+ <objectgroup color="#bababa" name="walls">
+  <object id="28" x="0" y="0" width="32" height="704"/>
+  <object id="31" x="8160" y="0" width="32" height="704"/>
  </objectgroup>
  <objectgroup name="flaps"/>
  <objectgroup color="#00ff00" name="player">

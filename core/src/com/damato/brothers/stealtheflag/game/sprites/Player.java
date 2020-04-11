@@ -86,7 +86,7 @@ public class Player extends Sprite {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(28/ GameMain.PPM,28/ GameMain.PPM);
         fixdef.filter.categoryBits = GameMain.PLAYER_BIT;
-        fixdef.filter.maskBits = GameMain.GROUND_BIT;
+        fixdef.filter.maskBits = GameMain.GROUND_BIT | GameMain.WALL_BIT;
         fixdef.shape = shape;
 
         b2body.createFixture(fixdef).setUserData(this);
