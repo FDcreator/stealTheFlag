@@ -1,6 +1,9 @@
 package com.damato.brothers.stealtheflag.game.world;
 
 import com.badlogic.gdx.physics.box2d.*;
+import com.damato.brothers.stealtheflag.game.GameMain;
+import com.damato.brothers.stealtheflag.game.sprites.FireBall;
+import com.damato.brothers.stealtheflag.game.sprites.Player;
 
 public class WorldContactListener implements ContactListener {
 
@@ -12,14 +15,20 @@ public class WorldContactListener implements ContactListener {
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
         switch (cDef){
-
-         /*   case GameMain.PLAYER_BIT | GameMain.GROUND_BIT:
-                if(fixA.getFilterData().categoryBits == GameMain.PLAYER_BIT) {
-                    ((Player) fixA.getUserData()).setHit(true);
+            case GameMain.FIREBALL_BIT | GameMain.GROUND_BIT:
+                if(fixA.getFilterData().categoryBits == GameMain.FIREBALL_BIT) {
+                    ((FireBall) fixA.getUserData()).setToDestroyed(true);
                 }else{
-                    ((Player)fixB.getUserData()).setHit(true);
+                    ((FireBall)fixB.getUserData()).setToDestroyed(true);
                 }
-                break;*/
+                break;
+            case GameMain.FIREBALL_BIT | GameMain.WALL_BIT:
+                if(fixA.getFilterData().categoryBits == GameMain.FIREBALL_BIT) {
+                    ((FireBall) fixA.getUserData()).setToDestroyed(true);
+                }else{
+                    ((FireBall)fixB.getUserData()).setToDestroyed(true);
+                }
+                break;
         }
     }
 
