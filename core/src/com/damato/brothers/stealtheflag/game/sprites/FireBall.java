@@ -26,12 +26,17 @@ public class FireBall extends Sprite {
         //isHit e shot talvez não sejam utilizados (BR-F)
         isHit = false;
         shot = false;
-        float increment = player.getDirectionR()? getWidth() : -getWidth();
 
-        defineFireBall(((player.getX()+increment/2))*GameMain.PPM,
-                (player.getY()+player.getHeight()/2)*GameMain.PPM);
-        float f = player.getDirectionR()? 10 : -10;
-        b2body.applyLinearImpulse(new Vector2(f,0),b2body.getWorldCenter(),true);
+        if (player.getDirectionR()){
+            defineFireBall(((player.getX() +player.getWidth()))*GameMain.PPM,
+                    (player.getY()+player.getHeight()*0.7f)*GameMain.PPM);
+            b2body.applyLinearImpulse(new Vector2(50,0),b2body.getWorldCenter(),true);
+        }else{
+            defineFireBall(((player.getX()))*GameMain.PPM,
+                    (player.getY()+player.getHeight()*0.7f)*GameMain.PPM);
+            b2body.applyLinearImpulse(new Vector2(-50,0),b2body.getWorldCenter(),true);
+        }
+
 
         setBounds(0,0,8/ GameMain.PPM, 8/GameMain.PPM);
     }
