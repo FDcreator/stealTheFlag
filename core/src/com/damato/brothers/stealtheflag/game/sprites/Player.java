@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.damato.brothers.stealtheflag.game.GameMain;
 import com.damato.brothers.stealtheflag.game.screens.GameScreen;
 
@@ -26,9 +27,14 @@ public class Player extends Sprite {
 
     private Vector2 position;
 
+    private boolean walkRight;
+    private boolean walkLeft;
+    private Array<FireBall> fireBalls;
+
     public Player(GameScreen gameScreen){
         world = gameScreen.getWorld();
-
+        walkLeft = false;
+        walkRight = false;
         stateTimer = 0;
         jumpTime = 0;
         isDead = false;
@@ -38,15 +44,37 @@ public class Player extends Sprite {
         shot = false;
         position = new Vector2(64,96);
 
+        fireBalls = new Array<FireBall>();
+
         definePlayer();
         setBounds(0,0,60/GameMain.PPM, 60/GameMain.PPM);
     }
     public void update(float dt){
-        setPosition(b2body.getPosition().x- getWidth() / 2,b2body.getPosition().y- getHeight() / 2);
+        setPosition(b2body.getPosition().x- getWidth() / 2,
+                b2body.getPosition().y- getHeight() / 2);
         getRegion(dt);
+
+        for (FireBall fireBall: fireBalls){
+            fireBall.update(dt);
+        }
     }
     public void dispose(){
 
+    }
+    public void jump(float dt){
+        jumpTime +=dt;
+        if ( currentState != State.JUMPING && currentState != State.FALLING) {
+            b2body.applyLinearImpulse(new Vector2(0, 6.5f), b2body.getWorldCenter(), true);
+            jumpTime = 0;
+            // currentState = State.JUMPING;
+        }
+        if (currentState == State.JUMPING && jumpTime >=0.3f){
+            b2body.applyLinearImpulse(new Vector2(0, 0.5f), b2body.getWorldCenter(), true);
+            jumpTime = 0;
+        }
+    }
+    public void fire(){
+        fireBalls.add(new FireBall(this));
     }
 
     public void definePlayer(){
@@ -67,14 +95,14 @@ public class Player extends Sprite {
     public TextureRegion getRegion(float dt){
         //used state here
         //invertendo textura
-       /* if (b2body.getLinearVelocity().x < 0 && !region.isFlipX()){
+       /* if (walkLeft && !region.isFlipX()){
             region.flip(true,false);
-        }else if (region.isFlipX()){
+        }else if (walkRight && region.isFlipX()){
             region.flip(true,false);
         }*/
+
         /*se statetimet = current timer e for igual a previousState
         faça stateTimer + dt, caso não todos ficam iguais a zero*/
-
         stateTimer = currentState == previousState ? stateTimer + dt : 0;
         previousState = currentState;
 
@@ -91,37 +119,40 @@ public class Player extends Sprite {
             return State.JUMPING;
         } else if (b2body.getLinearVelocity().y < 0 ) {
             return State.FALLING;
-        } else if (b2body.getLinearVelocity().x != 0) {
+        } else if (walkLeft || walkRight) {
             return State.WALKING;
         } else {
             return State.STANDING;
         }
     }
+
     public boolean isDead(){
         return  isDead;
-    }
-    public void hitInBody(){
-        //attached
-    }
-    public float getStateTimer(){
-        return  stateTimer;
-    }
-    public void setToDestroyed(boolean destroyed){
-        destroyed = this.destroyed;
-    }
-    public void jump(float dt){
-        jumpTime +=dt;
-        if ( currentState != State.JUMPING && currentState != State.FALLING) {
-            b2body.applyLinearImpulse(new Vector2(0, 6.5f), b2body.getWorldCenter(), true);
-            jumpTime = 0;
-            // currentState = State.JUMPING;
-        }
-        if (currentState == State.JUMPING && jumpTime >=0.3f){
-            b2body.applyLinearImpulse(new Vector2(0, 0.5f), b2body.getWorldCenter(), true);
-            jumpTime = 0;
-        }
     }
     public World getPlayerWorld(){
         return world;
     }
+    public boolean getDirectionR(){
+        //retorna verdadeiro se anda para direita e falso se anda  para esquerda
+        return walkRight;
+    }
+
+    public float getStateTimer(){
+        return  stateTimer;
+    }
+    public Array<FireBall> getFireBalls(){
+        return fireBalls;
+    }
+    public void setToDestroyed(boolean destroyed){
+        destroyed = this.destroyed;
+    }
+    public void setWalkDirection(boolean walkR,boolean walkL){
+        walkRight = walkR;
+        walkLeft = walkL;
+    }
+    public void hitInBody(){
+        //attached
+    }
+
+
 }

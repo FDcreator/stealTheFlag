@@ -130,6 +130,9 @@ public class GameScreen implements Screen{
 
 		if (!player.isDead()){
 
+			if (Gdx.input.isKeyJustPressed(Input.Keys.Z)){
+				player.fire();
+			}
 			if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) ||
 					Gdx.input.isKeyJustPressed(Input.Keys.UP)){
 				player.jump(dt);
@@ -139,9 +142,13 @@ public class GameScreen implements Screen{
 			if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
 				player.b2body.setTransform(player.b2body.getPosition().x + 0.05f + dt,
 						player.b2body.getPosition().y,0);
+				player.setWalkDirection(true,false);
+				System.out.println("walkingR: " + player.getDirectionR());
 			}else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
 				player.b2body.setTransform(player.b2body.getPosition().x -(0.05f + dt),
 						player.b2body.getPosition().y,0);
+				player.setWalkDirection(false,true);
+				System.out.println("walkingR: " + player.getDirectionR());
 			}
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.Q)){

@@ -17,7 +17,7 @@ public class ServerManagement {
 	
 	public void connectServer() {
 		try {
-			this.socket = IO.socket("http://localhost:3000");
+			this.socket = IO.socket("http://192.168.2.8:3000");
 			socket.connect();
 		} catch (URISyntaxException e) {
 			Gdx.app.log("SERVER", "ERRO AO SE CONECTAR: " + e);
