@@ -130,7 +130,7 @@ public class GameScreen implements Screen{
 
 		if (!player.isDead()){
 
-			if (Gdx.input.isKeyJustPressed(Input.Keys.Z)){
+			if (Gdx.input.isKeyPressed(Input.Keys.Z)){
 				player.fire();
 			}
 			if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) ||

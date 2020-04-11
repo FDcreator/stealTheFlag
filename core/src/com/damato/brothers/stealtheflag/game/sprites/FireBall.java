@@ -12,6 +12,7 @@ public class FireBall extends Sprite {
 
     private float stateTimer;
     private float lifeShot;
+    private float timeShot;
     private boolean destroy;
     private boolean setToDestroy;
     private boolean isHit;
@@ -20,30 +21,32 @@ public class FireBall extends Sprite {
     public FireBall(Player player){
         world = player.getPlayerWorld();
         stateTimer = 0;
-        lifeShot = 0;
+        lifeShot = 0.5f;
+        timeShot = 0;
         destroy = false;
         setToDestroy = false;
         //isHit e shot talvez não sejam utilizados (BR-F)
         isHit = false;
         shot = false;
 
+        float velocityBall = 10*lifeShot;
         if (player.getDirectionR()){
             defineFireBall(((player.getX() +player.getWidth()))*GameMain.PPM,
                     (player.getY()+player.getHeight()*0.7f)*GameMain.PPM);
-            b2body.applyLinearImpulse(new Vector2(50,0),b2body.getWorldCenter(),true);
+            b2body.applyLinearImpulse(new Vector2(10,0),b2body.getWorldCenter(),false);
         }else{
             defineFireBall(((player.getX()))*GameMain.PPM,
                     (player.getY()+player.getHeight()*0.7f)*GameMain.PPM);
-            b2body.applyLinearImpulse(new Vector2(-50,0),b2body.getWorldCenter(),true);
+            b2body.applyLinearImpulse(new Vector2(-10,0),b2body.getWorldCenter(),false);
         }
 
         setBounds(0,0,8/ GameMain.PPM, 8/GameMain.PPM);
     }
     public void update(float dt){
-        lifeShot +=dt;
+        timeShot +=dt;
         setPosition(b2body.getPosition().x- getWidth() / 2,b2body.getPosition().y- getHeight() / 2);
         getRegion(dt);
-        if((lifeShot >= 2 || setToDestroy) && !destroy) {
+        if((timeShot >= lifeShot || setToDestroy) && !destroy) {
             world.destroyBody(b2body);
             destroy = true;
         }
@@ -63,7 +66,7 @@ public class FireBall extends Sprite {
         fixdef.filter.categoryBits = GameMain.FIREBALL_BIT;
         fixdef.filter.maskBits = GameMain.GROUND_BIT | GameMain.PLAYER_BIT | GameMain.WALL_BIT;
         fixdef.shape = shape;
-
+        b2body.setGravityScale(0);
         b2body.createFixture(fixdef).setUserData(this);
 
     }

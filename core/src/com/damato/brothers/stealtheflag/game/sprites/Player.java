@@ -56,6 +56,9 @@ public class Player extends Sprite {
 
         for (FireBall fireBall: fireBalls){
             fireBall.update(dt);
+            if (fireBall.isDestroy()){
+                fireBalls.removeValue(fireBall,true);
+            }
         }
     }
     public void dispose(){
@@ -74,7 +77,9 @@ public class Player extends Sprite {
         }
     }
     public void fire(){
-        fireBalls.add(new FireBall(this));
+        if (fireBalls.size <1) {
+            fireBalls.add(new FireBall(this));
+        }
     }
 
     public void definePlayer(){
