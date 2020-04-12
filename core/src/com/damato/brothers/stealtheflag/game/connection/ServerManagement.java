@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.damato.brothers.stealtheflag.game.screens.GameScreen;
 import com.damato.brothers.stealtheflag.game.sprites.Player;
 
@@ -54,6 +55,7 @@ public class ServerManagement {
 					object.put("x", myPlayer.b2body.getPosition().x);
 					object.put("y", myPlayer.b2body.getPosition().y);
 					object.put("state", myPlayer.getState().toString());
+					object.put("direction", myPlayer.getDirectionR());
 					Gdx.app.log("connect", "" + myPlayer.getState().toString());
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -112,8 +114,10 @@ public class ServerManagement {
 							float x = ( (Double) objects.getJSONObject(i).getDouble("x") ).floatValue();
 							float y = ( (Double) objects.getJSONObject(i).getDouble("x") ).floatValue();
 							
-							player.b2body.setTransform(x, y, 0);
+							player.setPosition(new Vector2(x, y));
 							player.currentState = Player.State.valueOf(objects.getJSONObject(i).getString("state"));
+							boolean direction = objects.getJSONObject(i).getBoolean("direction");
+							player.setDirectionR(direction);
 							
 							userPlayers.put(objects.getJSONObject(i).getString("id"), player);
 							Gdx.app.log("GETPLAYERS", "id: " + objects.getJSONObject(i).getString("id") );
@@ -139,9 +143,12 @@ public class ServerManagement {
 					float x = ( (Double) data.getDouble("x") ).floatValue();
 					float y = ( (Double) data.getDouble("y") ).floatValue();
 					String state = data.getString("state");
+					boolean direction = data.getBoolean("direction");
 					if ( userPlayers.get(playerId) != null ) {
-						userPlayers.get(playerId).setPosition(x, y);
+						userPlayers.get(playerId).setPosition(new Vector2(x, y));
 						userPlayers.get(playerId).currentState = Player.State.valueOf(state);
+						
+						userPlayers.get(playerId).setDirectionR(direction);
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block

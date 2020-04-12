@@ -73,6 +73,7 @@ public class GameScreen implements Screen{
 	@Override
 	public void show () {
 		// TODO Auto-generated method stub
+		updateNewPlayers(0);
 
 	}
 
@@ -135,6 +136,7 @@ public class GameScreen implements Screen{
 		updateNewPlayers(dt);
 		gamecam.update();
 		renderer.setView(gamecam);
+		emitInfoToServer(dt);
 	}
 	
 	public void handleInput(float dt){
@@ -169,11 +171,11 @@ public class GameScreen implements Screen{
 		gamecam.position.y = player.b2body.getPosition().y;
 	}
 	
-	private void updateNewPlayers(float delta) {
+	private void emitInfoToServer(float delta) {
 		
 		timeUpdateServer += delta;
 		
-		if ( timeUpdateServer >= 1 / 60f && player != null && player.getState() != Player.State.STANDING ) {
+		if ( timeUpdateServer >= 1 / 60f && player != null ) {
 			JSONObject object = new JSONObject();
 			
 			try {
@@ -181,6 +183,7 @@ public class GameScreen implements Screen{
 				object.put("x", player.b2body.getPosition().x);
 				object.put("y", player.b2body.getPosition().y);
 				object.put("state", player.currentState);
+				object.put("direction", player.getDirectionR());
 				gameMain.server.getSocket().emit("playerMoved", object);
 				timeUpdateServer = 0f;
 				
@@ -190,9 +193,14 @@ public class GameScreen implements Screen{
 			}
 		}
 		
+	}
+	
+	private void updateNewPlayers(float delta) {
 		for ( Entry<String, Player> player: gameMain.server.getUserPlayers().entrySet() ) {
 			player.getValue().updateMove();
+			player.getValue().updateShooting();
+			player.getValue().update(delta);
+			
 		}
-		
 	}
 }

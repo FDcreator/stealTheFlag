@@ -1,5 +1,6 @@
 package com.damato.brothers.stealtheflag.game.sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -42,7 +43,7 @@ public class Player extends Sprite {
         //isHit e shot talvez não sejam utilizados (BR-F)
         isHit = false;
         shot = false;
-        position = new Vector2(64,96);
+        position = new Vector2(96, 256);
 
         fireBalls = new Array<FireBall>();
 
@@ -92,7 +93,7 @@ public class Player extends Sprite {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(28/ GameMain.PPM,28/ GameMain.PPM);
         fixdef.filter.categoryBits = GameMain.PLAYER_BIT;
-        fixdef.filter.maskBits = GameMain.GROUND_BIT | GameMain.WALL_BIT;
+        fixdef.filter.maskBits = GameMain.GROUND_BIT | GameMain.WALL_BIT | GameMain.FIREBALL_BIT;
         fixdef.shape = shape;
 
         b2body.createFixture(fixdef).setUserData(this);
@@ -144,6 +145,10 @@ public class Player extends Sprite {
         return walkRight;
     }
 
+    public void setDirectionR(boolean directionR) {
+    	this.walkRight = directionR;
+    }
+    
     public float getStateTimer(){
         return  stateTimer;
     }
@@ -162,8 +167,24 @@ public class Player extends Sprite {
     }
     
     public void updateMove() {
-    	b2body.setTransform(getX(), getY(), 0);
+    	b2body.setTransform(getPosition().x, getPosition().y, 0);
+    	//System.out.println("x: " + getX());
     }
+    
+    public void updateShooting() {
+    	if ( currentState == Player.State.SHOOTING ) {
+    		fire();
+    		Gdx.app.log("Player", "SHOOTING");
+    	}
+    }
+    
+    public void setPosition(Vector2 position) {
+		this.position = position;
+	}
+    
+    public Vector2 getPosition() {
+		return position;
+	}
 
 
 }
