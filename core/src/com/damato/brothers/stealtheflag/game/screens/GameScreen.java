@@ -38,7 +38,7 @@ public class GameScreen implements Screen{
 
 	private SpriteBatch spriteBatch;
 
-	public GameScreen(GameMain gameMain) {
+	public GameScreen(GameMain gameMain) { 
 		gameMain = this.gameMain;
 		spriteBatch = new SpriteBatch();
 

@@ -31,10 +31,11 @@ public class MenuScreen implements Screen {
 	private Stage stage;
 	private Skin skin;
 	
-	private boolean callGameScreen = false;
+	private boolean callGameScreen = false; 
 	
 	public MenuScreen(GameMain game) {
 		this.game = game;
+		
 	}
 	
 	// *== Public Methods ==*
@@ -69,7 +70,7 @@ public class MenuScreen implements Screen {
 	public void render(float delta) {
 		GameUtils.clearScreen(Color.SKY);
 		updateStage(delta);
-		
+
 		if ( callGameScreen ) {
 			game.setScreen(new GameScreen(game));
 		}

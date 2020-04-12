@@ -7,8 +7,21 @@ var players = [];
 io.on('connection', (socket) => {
 	console.log('User Connected: ' + socket.id);
 	
-	socket.on('disconnect', () => {
+	socket.emit('socketID', { id: socket.id } );
+	socket.broadcast.emit('User id: ' + socket.id);
+	
+	socket.broadcast.emit('newPlayer',  {id: socket.id} );
+	
+	
+	socket.on('disconnect', (id) => {
 		console.log('User Disconnected: ' + socket.id);
+		socket.broadcast.emit('playerDisconnect', { id: socket.id });
+		
+		for ( let i = 0; i < players.length; i++ ) {
+			if ( players[i].id == socket.id ) {
+				players.splice(i, 1);
+			}
+		}
 	});
 });
 
