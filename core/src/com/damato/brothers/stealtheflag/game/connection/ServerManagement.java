@@ -23,21 +23,23 @@ public class ServerManagement {
 	private HashMap<String, Player> userPlayers;
 	
 	public ServerManagement() {
-		connectServer();
 		
 		this.userPlayers = new HashMap<String, Player>();
 	}
 	
-	public void connectServer() {
+	public void connectServer(GameScreen gameScreen) {
 		try {
 			this.socket = IO.socket("http://192.168.2.8:3000");
 			socket.connect();
+			configSocketEvents(gameScreen);
 		} catch (URISyntaxException e) {
 			Gdx.app.log("SERVER", "ERRO AO SE CONECTAR: " + e);
 		}
+		
+		
 	}
 	
-	public void configSocketEvents(GameScreen gameScreen) {
+	private void configSocketEvents(GameScreen gameScreen) {
 		
 		final GameScreen gScreen = gameScreen;
 		
@@ -87,6 +89,56 @@ public class ServerManagement {
 				}
 				
 			}
+		}).on("getPlayers", new Emitter.Listener() {
+			
+			@Override
+			public void call(Object... args) {
+				JSONArray objects = (JSONArray) args[0];
+				
+				try {
+					
+					for ( int i = 0; i < objects.length(); i++ ) {
+						Player player = new Player(gScreen);
+						
+						float x = ( (Double) objects.getJSONObject(i).getDouble("x") ).floatValue();
+						float y = ( (Double) objects.getJSONObject(i).getDouble("x") ).floatValue();
+						
+						player.b2body.setTransform(x, y, 0);
+						player.currentState = Player.State.valueOf(objects.getJSONObject(i).getString("state"));
+						
+						userPlayers.put(objects.getJSONObject(i).getString("id"), player);
+					}
+					
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+				
+			}
+		}).on("playerMoved", new Emitter.Listener() {
+			
+			@Override
+			public void call(Object... args) {
+				JSONObject data = (JSONObject) args[0];
+				
+				try {
+					String playerId = data.getString("id");
+					
+					float x = ( (Double) data.getDouble("x") ).floatValue();
+					float y = ( (Double) data.getDouble("y") ).floatValue();
+					String state = data.getString("state");
+					if ( userPlayers.get(playerId) != null ) {
+						userPlayers.get(playerId).b2body.setTransform(x, y, 0);
+						userPlayers.get(playerId).currentState = Player.State.valueOf(state);
+					}
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+			}
 		}).on("playerDisconnect", new Emitter.Listener() {
 			
 			@Override
@@ -104,5 +156,13 @@ public class ServerManagement {
 				
 			}
 		});
+	}
+	
+	public HashMap<String, Player> getUserPlayers() {
+		return userPlayers;
+	}
+	
+	public Socket getSocket() {
+		return socket;
 	}
 }

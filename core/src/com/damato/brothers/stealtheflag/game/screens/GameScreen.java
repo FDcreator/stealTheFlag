@@ -1,5 +1,11 @@
 package com.damato.brothers.stealtheflag.game.screens;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -37,9 +43,12 @@ public class GameScreen implements Screen{
 	private Player player;
 
 	private SpriteBatch spriteBatch;
+	
+	private float timeUpdateServer = 0f;
 
 	public GameScreen(GameMain gameMain) { 
-		gameMain = this.gameMain;
+		this.gameMain = gameMain;
+		gameMain.server.connectServer(this);
 		spriteBatch = new SpriteBatch();
 
 		gamecam = new OrthographicCamera();
@@ -123,9 +132,11 @@ public class GameScreen implements Screen{
 		//takes 1 step in the physics simulation(60 times per second)
 		world.step(1 / 60f, 6, 2);
 		player.update(dt);
+		updateNewPlayers(dt);
 		gamecam.update();
 		renderer.setView(gamecam);
 	}
+	
 	public void handleInput(float dt){
 
 		if (!player.isDead()){
@@ -156,5 +167,27 @@ public class GameScreen implements Screen{
 		}
 		gamecam.position.x = player.b2body.getPosition().x;
 		gamecam.position.y = player.b2body.getPosition().y;
+	}
+	
+	private void updateNewPlayers(float delta) {
+		
+		timeUpdateServer += delta;
+		
+		if ( timeUpdateServer >= 1 / 60f && player != null && player.getState() == Player.State.WALKING ) {
+			JSONObject object = new JSONObject();
+			
+			try {
+				
+				object.put("x", player.b2body.getPosition().x);
+				object.put("y", player.b2body.getPosition().y);
+				object.put("state", player.currentState);
+				gameMain.server.getSocket().emit("playerMoved", object);
+				
+			} catch (JSONException e) {
+				// TODO: handle exception
+				e.getStackTrace();
+			}
+		}
+		
 	}
 }

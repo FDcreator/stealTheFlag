@@ -8,9 +8,20 @@ io.on('connection', (socket) => {
 	console.log('User Connected: ' + socket.id);
 	
 	socket.emit('socketID', { id: socket.id } );
-	socket.broadcast.emit('User id: ' + socket.id);
-	
+	socket.emit('getPlayers', players);
 	socket.broadcast.emit('newPlayer',  {id: socket.id} );
+	socket.on('playerMoved', (data) => {
+		data.id = socket.id;
+		socket.broadcast.emit('playerMoved', data);
+		for ( let i = 0; i < players.length; i++ ) {
+			if ( players[i].id == socket.id ) {
+				players[i].x = data.x;
+				players[i].y = data.y;
+				players[i].state = data.state;
+			}
+		}
+	});
+	
 	
 	
 	socket.on('disconnect', (id) => {
@@ -23,15 +34,17 @@ io.on('connection', (socket) => {
 			}
 		}
 	});
+	
+	players.push(new Player(socket.id, 50, 50, "STANDING"))
 });
 
 server.listen(3000, () => {
 	console.log('Listening in port=3000')
 });
 
-function Player(id, x, y, stage) {
+function Player(id, x, y, state) {
 	this.id = id;
 	this.x = x;
 	this.y = y;
-	this.stage = stage;
+	this.state = state;
 }
