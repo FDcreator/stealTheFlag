@@ -77,6 +77,7 @@ public class Player extends Sprite {
         }
     }
     public void fire(){
+        shot = true;
         if (fireBalls.size <1) {
             fireBalls.add(new FireBall(this));
         }
@@ -119,6 +120,7 @@ public class Player extends Sprite {
         if (isDead) {
             return State.DEAD;
         } else if (shot) {
+            shot = false;
             return State.SHOOTING;
         } else if ((b2body.getLinearVelocity().y > 0)) {
             return State.JUMPING;
