@@ -7,9 +7,13 @@ var players = [];
 io.on('connection', (socket) => {
 	console.log('User Connected: ' + socket.id);
 	
+	// emite o id para si
 	socket.emit('socketID', { id: socket.id } );
-	socket.emit('getPlayers', players);
-	socket.broadcast.emit('newPlayer',  {id: socket.id} );
+	// emite os players para si
+	socket.emit('getPlayers', players); // emite para todos, ele pode pegar
+	// emite o id para outros players
+	socket.broadcast.emit('newPlayer',  {id: socket.id} ); // emite para outros sockets, ou seja, o socket nao pode pegar
+	
 	socket.on('playerMoved', (data) => {
 		data.id = socket.id;
 		socket.broadcast.emit('playerMoved', data);
@@ -18,11 +22,11 @@ io.on('connection', (socket) => {
 				players[i].x = data.x;
 				players[i].y = data.y;
 				players[i].state = data.state;
+				
 			}
+			
 		}
 	});
-	
-	
 	
 	socket.on('disconnect', (id) => {
 		console.log('User Disconnected: ' + socket.id);
@@ -35,7 +39,10 @@ io.on('connection', (socket) => {
 		}
 	});
 	
-	players.push(new Player(socket.id, 50, 50, "STANDING"))
+	// pega as informacoes do player ao ser criado
+	socket.on('myPlayer', (player) => {
+		players.push(new Player(socket.id, player.x, player.y, player.state));
+	})
 });
 
 server.listen(3000, () => {

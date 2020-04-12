@@ -48,7 +48,6 @@ public class GameScreen implements Screen{
 
 	public GameScreen(GameMain gameMain) { 
 		this.gameMain = gameMain;
-		gameMain.server.connectServer(this);
 		spriteBatch = new SpriteBatch();
 
 		gamecam = new OrthographicCamera();
@@ -69,6 +68,7 @@ public class GameScreen implements Screen{
 		world.setContactListener(new WorldContactListener());
 
 		player = new Player(this);
+		gameMain.server.connectServer(this, player);
 	}
 	@Override
 	public void show () {
@@ -173,7 +173,7 @@ public class GameScreen implements Screen{
 		
 		timeUpdateServer += delta;
 		
-		if ( timeUpdateServer >= 1 / 60f && player != null && player.getState() == Player.State.WALKING ) {
+		if ( timeUpdateServer >= 1 / 60f && player != null && player.getState() != Player.State.STANDING ) {
 			JSONObject object = new JSONObject();
 			
 			try {
@@ -182,11 +182,16 @@ public class GameScreen implements Screen{
 				object.put("y", player.b2body.getPosition().y);
 				object.put("state", player.currentState);
 				gameMain.server.getSocket().emit("playerMoved", object);
+				timeUpdateServer = 0f;
 				
 			} catch (JSONException e) {
 				// TODO: handle exception
 				e.getStackTrace();
 			}
+		}
+		
+		for ( Entry<String, Player> player: gameMain.server.getUserPlayers().entrySet() ) {
+			player.getValue().updateMove();
 		}
 		
 	}

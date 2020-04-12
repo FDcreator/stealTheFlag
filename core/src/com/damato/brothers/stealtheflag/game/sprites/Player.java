@@ -158,6 +158,10 @@ public class Player extends Sprite {
     public void hitInBody(){
         //attached
     }
+    
+    public void updateMove() {
+    	b2body.setTransform(getX(), getY(), 0);
+    }
 
 
 }
