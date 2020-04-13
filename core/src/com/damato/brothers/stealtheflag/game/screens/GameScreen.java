@@ -170,7 +170,7 @@ public class GameScreen implements Screen{
 		gamecam.position.x = player.b2body.getPosition().x;
 		gamecam.position.y = player.b2body.getPosition().y;
 	}
-	
+	//methods for server
 	private void emitInfoToServer(float delta) {
 		
 		timeUpdateServer += delta;

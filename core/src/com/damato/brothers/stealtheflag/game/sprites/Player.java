@@ -67,7 +67,8 @@ public class Player extends Sprite {
     }
     public void jump(float dt){
         jumpTime +=dt;
-        if ( currentState != State.JUMPING && currentState != State.FALLING) {
+        if ( currentState != State.JUMPING &&
+                currentState != State.FALLING && (b2body.getLinearVelocity().y ==0)) {
             b2body.applyLinearImpulse(new Vector2(0, 6.5f), b2body.getWorldCenter(), true);
             jumpTime = 0;
             // currentState = State.JUMPING;

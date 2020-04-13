@@ -112,7 +112,7 @@ public class ServerManagement {
 							Player player = new Player(gScreen);
 							
 							float x = ( (Double) objects.getJSONObject(i).getDouble("x") ).floatValue();
-							float y = ( (Double) objects.getJSONObject(i).getDouble("x") ).floatValue();
+							float y = ( (Double) objects.getJSONObject(i).getDouble("y") ).floatValue();
 							
 							player.setPosition(new Vector2(x, y));
 							player.currentState = Player.State.valueOf(objects.getJSONObject(i).getString("state"));

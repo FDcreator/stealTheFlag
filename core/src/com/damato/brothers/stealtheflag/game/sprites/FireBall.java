@@ -31,11 +31,11 @@ public class FireBall extends Sprite {
 
         float velocityBall = 10*lifeShot;
         if (player.getDirectionR()){
-            defineFireBall(((player.getX() +player.getWidth()))*GameMain.PPM,
+            defineFireBall(((player.getX() +player.getWidth()*1.2f))*GameMain.PPM,
                     (player.getY()+player.getHeight()*0.7f)*GameMain.PPM);
             b2body.applyLinearImpulse(new Vector2(10,0),b2body.getWorldCenter(),false);
         }else{
-            defineFireBall(((player.getX()))*GameMain.PPM,
+            defineFireBall(((player.getX()-player.getWidth()*0.2f))*GameMain.PPM,
                     (player.getY()+player.getHeight()*0.7f)*GameMain.PPM);
             b2body.applyLinearImpulse(new Vector2(-10,0),b2body.getWorldCenter(),false);
         }
@@ -66,6 +66,7 @@ public class FireBall extends Sprite {
         fixdef.filter.categoryBits = GameMain.FIREBALL_BIT;
         fixdef.filter.maskBits = GameMain.GROUND_BIT | GameMain.PLAYER_BIT | GameMain.WALL_BIT;
         fixdef.shape = shape;
+        //fixdef.isSensor = true;
         b2body.setGravityScale(0);
         b2body.createFixture(fixdef).setUserData(this);
 

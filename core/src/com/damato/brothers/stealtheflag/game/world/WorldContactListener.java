@@ -29,6 +29,16 @@ public class WorldContactListener implements ContactListener {
                     ((FireBall)fixB.getUserData()).setToDestroyed(true);
                 }
                 break;
+
+            case GameMain.FIREBALL_BIT | GameMain.PLAYER_BIT:
+                if(fixA.getFilterData().categoryBits == GameMain.FIREBALL_BIT) {
+                    ((FireBall) fixA.getUserData()).setToDestroyed(true);
+                    ((Player) fixB.getUserData()).hitInBody();
+                }else{
+                    ((FireBall)fixB.getUserData()).setToDestroyed(true);
+                    ((Player) fixA.getUserData()).hitInBody();
+                }
+                break;
         }
     }
 
