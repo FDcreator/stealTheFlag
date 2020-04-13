@@ -56,6 +56,7 @@ public class ServerManagement {
 					object.put("y", myPlayer.b2body.getPosition().y);
 					object.put("state", myPlayer.getState().toString());
 					object.put("direction", myPlayer.getDirectionR());
+					object.put("life", myPlayer.getLife());
 					Gdx.app.log("connect", "" + myPlayer.getState().toString());
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -118,6 +119,7 @@ public class ServerManagement {
 							player.currentState = Player.State.valueOf(objects.getJSONObject(i).getString("state"));
 							boolean direction = objects.getJSONObject(i).getBoolean("direction");
 							player.setDirectionR(direction);
+							player.setLife(objects.getJSONObject(i).getInt("life"));
 							
 							userPlayers.put(objects.getJSONObject(i).getString("id"), player);
 							Gdx.app.log("GETPLAYERS", "id: " + objects.getJSONObject(i).getString("id") );
@@ -144,11 +146,12 @@ public class ServerManagement {
 					float y = ( (Double) data.getDouble("y") ).floatValue();
 					String state = data.getString("state");
 					boolean direction = data.getBoolean("direction");
+					int life = data.getInt("life");
 					if ( userPlayers.get(playerId) != null ) {
 						userPlayers.get(playerId).setPosition(new Vector2(x, y));
 						userPlayers.get(playerId).currentState = Player.State.valueOf(state);
-						
 						userPlayers.get(playerId).setDirectionR(direction);
+						userPlayers.get(playerId).setLife(life);
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block

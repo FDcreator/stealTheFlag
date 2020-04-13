@@ -23,6 +23,7 @@ io.on('connection', (socket) => {
 				players[i].y = data.y;
 				players[i].state = data.state;
 				players[i].direction = data.direction;
+				players[i].life = data.life;
 				
 			}
 			
@@ -42,7 +43,7 @@ io.on('connection', (socket) => {
 	
 	// pega as informacoes do player ao ser criado
 	socket.on('myPlayer', (player) => {
-		players.push(new Player(socket.id, player.x, player.y, player.state, player.direction));
+		players.push(new Player(socket.id, player.x, player.y, player.state, player.direction, player.life));
 	})
 });
 
@@ -50,10 +51,11 @@ server.listen(3000, () => {
 	console.log('Listening in port=3000')
 });
 
-function Player(id, x, y, state, direction) {
+function Player(id, x, y, state, direction, life) {
 	this.id = id;
 	this.x = x;
 	this.y = y;
 	this.state = state;
 	this.direction = direction;
+	this.life = life;
 }
