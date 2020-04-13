@@ -1,8 +1,12 @@
 package com.damato.brothers.stealtheflag.game.sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
@@ -12,6 +16,17 @@ import com.damato.brothers.stealtheflag.game.screens.GameScreen;
 public class Player extends Sprite {
     //for animation
     public enum  State {  STANDING, JUMPING,FALLING, WALKING, SHOOTING, DEAD };
+    
+    public enum Arm {
+    	PISTOL(5), SUB(25), BAZOOKA(50);
+    	
+    	int damage;
+    	
+    	Arm(int d) {
+    		damage = d;
+    	}
+    	
+    };
 
     public State currentState;
     public State previousState;
@@ -25,15 +40,22 @@ public class Player extends Sprite {
     private boolean destroyed;
     private boolean isHit;
     private boolean shot;
+    private int life;
+    private Arm arm;
 
     private Vector2 position;
 
     private boolean walkRight;
     private boolean walkLeft;
     private Array<FireBall> fireBalls;
+    
+    private ShapeRenderer renderer;
 
     public Player(GameScreen gameScreen){
         world = gameScreen.getWorld();
+        this.renderer = gameScreen.getShapeRender();
+        life = 100;
+        arm = Arm.PISTOL;
         walkLeft = false;
         walkRight = false;
         stateTimer = 0;
@@ -44,6 +66,7 @@ public class Player extends Sprite {
         isHit = false;
         shot = false;
         position = new Vector2(96, 256);
+        
 
         fireBalls = new Array<FireBall>();
 
@@ -163,8 +186,15 @@ public class Player extends Sprite {
         walkRight = walkR;
         walkLeft = walkL;
     }
-    public void hitInBody(){
+    public void hitInBody(int damage){
         //attached
+    	if ( getLife() > 0 ) {
+    		if ( getLife() - damage <= 0 ) {
+        		setLife(0);
+        	} else {
+        		setLife( getLife() - damage );
+        	}
+    	}
     }
     
     public void updateMove() {
@@ -179,6 +209,23 @@ public class Player extends Sprite {
     	}
     }
     
+    public void drawLife() {
+    	float width = ( getWidth() * 2 ) * (getLife() / 100f);
+    	System.out.println("life: " + getLife());
+    	float height = 10 / GameMain.PPM;
+    	
+    	renderer.begin(ShapeType.Line);
+    	renderer.setColor(Color.WHITE);
+    	renderer.rect(getPosition().x - (getWidth()), getPosition().y + getHeight(),  ( getWidth() * 2 ), height);
+    	renderer.end();
+    	
+    	renderer.begin(ShapeType.Filled);
+    	renderer.setColor(Color.RED);
+    	renderer.rect(getPosition().x - (getWidth()), getPosition().y + getHeight(), width, height);
+    	renderer.end();
+    	
+    }
+    
     public void setPosition(Vector2 position) {
 		this.position = position;
 	}
@@ -187,5 +234,20 @@ public class Player extends Sprite {
 		return position;
 	}
 
+    public int getLife() {
+		return life;
+	}
+    
+    public void setLife(int life) {
+		this.life = life;
+	}
+    
+    public Arm getArm() {
+		return arm;
+	}
+    
+    public int getDamage() {
+    	return arm.damage;
+    }
 
 }

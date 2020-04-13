@@ -1,5 +1,6 @@
 package com.damato.brothers.stealtheflag.game.world;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.damato.brothers.stealtheflag.game.GameMain;
 import com.damato.brothers.stealtheflag.game.sprites.FireBall;
@@ -32,11 +33,15 @@ public class WorldContactListener implements ContactListener {
 
             case GameMain.FIREBALL_BIT | GameMain.PLAYER_BIT:
                 if(fixA.getFilterData().categoryBits == GameMain.FIREBALL_BIT) {
-                    ((FireBall) fixA.getUserData()).setToDestroyed(true);
-                    ((Player) fixB.getUserData()).hitInBody();
+                    FireBall fireBall = ((FireBall) fixA.getUserData());
+                    fireBall.setToDestroyed(true);
+                    ((Player) fixB.getUserData()).hitInBody(fireBall.getPlayer().getDamage());
+                    System.out.println("damage: " + fireBall.getPlayer().getDamage());
                 }else{
-                    ((FireBall)fixB.getUserData()).setToDestroyed(true);
-                    ((Player) fixA.getUserData()).hitInBody();
+                	FireBall fireBall = ((FireBall)fixB.getUserData());
+                    fireBall.setToDestroyed(true);
+                    ((Player) fixA.getUserData()).hitInBody(fireBall.getPlayer().getDamage());
+                    System.out.println("damage: " + fireBall.getPlayer().getDamage());
                 }
                 break;
         }

@@ -17,8 +17,10 @@ public class FireBall extends Sprite {
     private boolean setToDestroy;
     private boolean isHit;
     private boolean shot;
+    private Player player;
 
     public FireBall(Player player){
+    	this.player = player;
         world = player.getPlayerWorld();
         stateTimer = 0;
         lifeShot = 0.5f;
@@ -66,7 +68,7 @@ public class FireBall extends Sprite {
         fixdef.filter.categoryBits = GameMain.FIREBALL_BIT;
         fixdef.filter.maskBits = GameMain.GROUND_BIT | GameMain.PLAYER_BIT | GameMain.WALL_BIT;
         fixdef.shape = shape;
-        //fixdef.isSensor = true;
+        fixdef.isSensor = true;
         b2body.setGravityScale(0);
         b2body.createFixture(fixdef).setUserData(this);
 
@@ -93,4 +95,8 @@ public class FireBall extends Sprite {
     public void setToDestroyed(boolean destroyed){
        setToDestroy = destroyed;
     }
+    
+    public Player getPlayer() {
+		return player;
+	}
 }

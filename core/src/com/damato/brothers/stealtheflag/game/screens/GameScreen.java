@@ -11,6 +11,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -43,12 +44,14 @@ public class GameScreen implements Screen{
 	private Player player;
 
 	private SpriteBatch spriteBatch;
+	private ShapeRenderer shapeRender;
 	
 	private float timeUpdateServer = 0f;
 
 	public GameScreen(GameMain gameMain) { 
 		this.gameMain = gameMain;
 		spriteBatch = new SpriteBatch();
+		this.shapeRender = new ShapeRenderer();
 
 		gamecam = new OrthographicCamera();
 		gamecam.setToOrtho(false);
@@ -85,6 +88,7 @@ public class GameScreen implements Screen{
 		renderer.render();
 		b2dr.render(world,gamecam.combined);
 		spriteBatch.setProjectionMatrix(gamecam.combined);
+		checkGameOver();
 
 	}
 
@@ -120,12 +124,18 @@ public class GameScreen implements Screen{
 		b2dr.dispose();
 		player.dispose();
 	}
+	
+	// == Getters and Setters ==
 
 	public TiledMap getMap () {
 		return map;
 	}
 	public World getWorld () {
 		return world;
+	}
+	
+	public ShapeRenderer getShapeRender() {
+		return shapeRender;
 	}
 
 	public void update(float dt){
@@ -200,7 +210,16 @@ public class GameScreen implements Screen{
 			player.getValue().updateMove();
 			player.getValue().updateShooting();
 			player.getValue().update(delta);
+			shapeRender.setProjectionMatrix(gamecam.combined);
+			player.getValue().drawLife();
 			
+		}
+	}
+	
+	private void checkGameOver() {
+		if ( player.getLife() <= 0.0f ) {
+			gameMain.server.getSocket().disconnect();
+			gameMain.setScreen(new MenuScreen(gameMain));
 		}
 	}
 }
