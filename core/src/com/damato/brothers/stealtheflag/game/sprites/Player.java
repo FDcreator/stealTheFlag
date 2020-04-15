@@ -67,7 +67,7 @@ public class Player extends Sprite {
         world = gameScreen.getWorld();
         this.renderer = gameScreen.getShapeRender();
         life = 100;
-        arm = Arm.SUB;
+        arm = Arm.PISTOL;
         countBullet = arm.countBullet;
         countRechargeBullet = arm.countRechargeBullet;
         walkLeft = false;

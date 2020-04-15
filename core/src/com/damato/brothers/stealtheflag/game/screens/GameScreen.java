@@ -10,6 +10,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -32,6 +34,7 @@ public class GameScreen implements Screen{
 	//basic camera settings
 	private OrthographicCamera gamecam;
 	private Viewport gamePort;
+	private Hud hud;
 	//Tiled map variables
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer renderer;
@@ -45,6 +48,8 @@ public class GameScreen implements Screen{
 
 	private SpriteBatch spriteBatch;
 	private ShapeRenderer shapeRender;
+	private BitmapFont font;
+	private GlyphLayout layout;
 	
 	private float timeUpdateServer = 0f;
 
@@ -52,6 +57,10 @@ public class GameScreen implements Screen{
 		this.gameMain = gameMain;
 		spriteBatch = new SpriteBatch();
 		this.shapeRender = new ShapeRenderer();
+		this.font = new BitmapFont();
+		this.font.getData().markupEnabled = true;
+		this.layout = new GlyphLayout();
+		this.hud = new Hud(spriteBatch, shapeRender, font, layout);
 
 		gamecam = new OrthographicCamera();
 		gamecam.setToOrtho(false);
@@ -88,6 +97,8 @@ public class GameScreen implements Screen{
 		renderer.render();
 		b2dr.render(world,gamecam.combined);
 		spriteBatch.setProjectionMatrix(gamecam.combined);
+		hud.drawHudPlayer(player);
+		
 		checkGameOver();
 
 	}
@@ -96,6 +107,7 @@ public class GameScreen implements Screen{
 	public void resize ( int width, int height){
 		// TODO Auto-generated method stub
 		gamePort.update(width,height, true);
+		hud.resize(width, height);
 	}
 
 	@Override
@@ -123,6 +135,7 @@ public class GameScreen implements Screen{
 		world.dispose();
 		b2dr.dispose();
 		player.dispose();
+		shapeRender.dispose();
 	}
 	
 	// == Getters and Setters ==
