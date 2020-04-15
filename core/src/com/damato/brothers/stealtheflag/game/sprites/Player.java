@@ -1,6 +1,7 @@
 package com.damato.brothers.stealtheflag.game.sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,12 +19,21 @@ public class Player extends Sprite {
     public enum  State {  STANDING, JUMPING,FALLING, WALKING, SHOOTING, DEAD };
     
     public enum Arm {
-    	PISTOL(5), SUB(25), BAZOOKA(50);
+    	PISTOL(10, 15, 8, 0.5f, 12, 40), SUB(5, 30, 8, 0.25f, 30, 150), BAZOOKA(50, 5, 20, 1.5f, 5, 10);
     	
     	int damage;
-    	
-    	Arm(int d) {
-    		damage = d;
+    	int speed;
+    	int dimension;
+    	float timeLife;
+    	int countBullet;
+    	int countRechargeBullet;
+    	Arm(int dam, int spe, int dimen, float timeli, int countB, int countRB) {
+    		damage = dam;
+    		speed = spe;
+    		dimension = dimen;
+    		timeLife = timeli;
+    		countBullet = countB;
+    		countRechargeBullet = countRB;
     	}
     	
     };
@@ -42,6 +52,8 @@ public class Player extends Sprite {
     private boolean shot;
     private int life;
     private Arm arm;
+    private int countBullet;
+    private int countRechargeBullet;
 
     private Vector2 position;
 
@@ -55,7 +67,9 @@ public class Player extends Sprite {
         world = gameScreen.getWorld();
         this.renderer = gameScreen.getShapeRender();
         life = 100;
-        arm = Arm.PISTOL;
+        arm = Arm.SUB;
+        countBullet = arm.countBullet;
+        countRechargeBullet = arm.countRechargeBullet;
         walkLeft = false;
         walkRight = false;
         stateTimer = 0;
@@ -72,6 +86,8 @@ public class Player extends Sprite {
 
         definePlayer();
         setBounds(0,0,60/GameMain.PPM, 60/GameMain.PPM);
+        
+        Gdx.app.log("PLAYER", "arm: " + getArm());
     }
     public void update(float dt){
         setPosition(b2body.getPosition().x- getWidth() / 2,
@@ -83,6 +99,22 @@ public class Player extends Sprite {
             if (fireBall.isDestroy()){
                 fireBalls.removeValue(fireBall,true);
             }
+        }
+        
+        if ( Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+        	switch(arm) {
+        		case PISTOL:  arm = Arm.SUB; break;
+        		case SUB: arm = Arm.BAZOOKA; break;
+        		case BAZOOKA: arm = Arm.PISTOL; break;
+        	}
+        }
+        
+        if ( Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+        	Gdx.app.log("ARM", countBullet + "/" + countRechargeBullet);
+        }
+        
+        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+        	rechargeArm();
         }
     }
     public void dispose(){
@@ -103,8 +135,9 @@ public class Player extends Sprite {
     }
     public void fire(){
         shot = true;
-        if (fireBalls.size <1) {
+        if (fireBalls.size < 1 && countBullet > 0) {
             fireBalls.add(new FireBall(this));
+            countBullet--;
         }
     }
 
@@ -211,7 +244,7 @@ public class Player extends Sprite {
     
     public void drawLife() {
     	float width = ( getWidth() * 2 ) * (getLife() / 100f);
-    	System.out.println("life: " + getLife());
+    	Gdx.app.log("PLAYER", "life: " + life);
     	float height = 10 / GameMain.PPM;
     	
     	renderer.begin(ShapeType.Line);
@@ -224,6 +257,21 @@ public class Player extends Sprite {
     	renderer.rect(getPosition().x - (getWidth()), getPosition().y + getHeight(), width, height);
     	renderer.end();
     	
+    }
+    
+    private void rechargeArm() {
+    	if (  countRechargeBullet > 0 && countBullet < 30) {
+    		
+    		if ( countRechargeBullet > arm.countBullet - countBullet) {
+	    		int count = arm.countBullet - countBullet; // 30 - 20 = 10
+	    		countRechargeBullet -= count; // x - 10
+	    		countBullet += count; // 20 + 10 = 30
+    		} else {
+    			countBullet += countRechargeBullet;
+    			countRechargeBullet = 0;
+    		}
+    		
+    	}
     }
     
     public void setPosition(Vector2 position) {
@@ -244,6 +292,10 @@ public class Player extends Sprite {
     
     public Arm getArm() {
 		return arm;
+	}
+    
+    public void setArm(Arm arm) {
+		this.arm = arm;
 	}
     
     public int getDamage() {

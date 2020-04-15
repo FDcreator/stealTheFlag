@@ -133,7 +133,7 @@ public class ServerManagement {
 				
 				
 			}
-		}).on("playerMoved", new Emitter.Listener() {
+		}).on("updatePlayer", new Emitter.Listener() {
 			
 			@Override
 			public void call(Object... args) {
@@ -147,11 +147,13 @@ public class ServerManagement {
 					String state = data.getString("state");
 					boolean direction = data.getBoolean("direction");
 					int life = data.getInt("life");
+					String arm = data.getString("arm");
 					if ( userPlayers.get(playerId) != null ) {
 						userPlayers.get(playerId).setPosition(new Vector2(x, y));
 						userPlayers.get(playerId).currentState = Player.State.valueOf(state);
 						userPlayers.get(playerId).setDirectionR(direction);
 						userPlayers.get(playerId).setLife(life);
+						userPlayers.get(playerId).setArm( Player.Arm.valueOf(arm));
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block

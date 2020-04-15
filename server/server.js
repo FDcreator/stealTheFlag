@@ -14,9 +14,9 @@ io.on('connection', (socket) => {
 	// emite o id para outros players
 	socket.broadcast.emit('newPlayer',  {id: socket.id} ); // emite para outros sockets, ou seja, o socket nao pode pegar
 	
-	socket.on('playerMoved', (data) => {
+	socket.on('updatePlayer', (data) => {
 		data.id = socket.id;
-		socket.broadcast.emit('playerMoved', data);
+		socket.broadcast.emit('updatePlayer', data);
 		for ( let i = 0; i < players.length; i++ ) {
 			if ( players[i].id == socket.id ) {
 				players[i].x = data.x;
@@ -24,6 +24,7 @@ io.on('connection', (socket) => {
 				players[i].state = data.state;
 				players[i].direction = data.direction;
 				players[i].life = data.life;
+				players[i].arm = data.arm;
 				
 			}
 			
@@ -43,7 +44,7 @@ io.on('connection', (socket) => {
 	
 	// pega as informacoes do player ao ser criado
 	socket.on('myPlayer', (player) => {
-		players.push(new Player(socket.id, player.x, player.y, player.state, player.direction, player.life));
+		players.push(new Player(socket.id, player.x, player.y, player.state, player.direction, player.life, player.arm));
 	})
 });
 
@@ -51,11 +52,12 @@ server.listen(3000, () => {
 	console.log('Listening in port=3000')
 });
 
-function Player(id, x, y, state, direction, life) {
+function Player(id, x, y, state, direction, life, arm) {
 	this.id = id;
 	this.x = x;
 	this.y = y;
 	this.state = state;
 	this.direction = direction;
 	this.life = life;
+	this.arm = arm;
 }

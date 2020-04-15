@@ -23,7 +23,7 @@ public class FireBall extends Sprite {
     	this.player = player;
         world = player.getPlayerWorld();
         stateTimer = 0;
-        lifeShot = 0.5f;
+        lifeShot = player.getArm().timeLife;  //lifeShot = 0.5f;
         timeShot = 0;
         destroy = false;
         setToDestroy = false;
@@ -34,12 +34,12 @@ public class FireBall extends Sprite {
         float velocityBall = 10*lifeShot;
         if (player.getDirectionR()){
             defineFireBall(((player.getX() +player.getWidth()*1.2f))*GameMain.PPM,
-                    (player.getY()+player.getHeight()*0.7f)*GameMain.PPM);
-            b2body.applyLinearImpulse(new Vector2(10,0),b2body.getWorldCenter(),false);
+                    (player.getY()+player.getHeight()*0.7f)*GameMain.PPM, player.getArm().dimension);
+            b2body.applyLinearImpulse(new Vector2(player.getArm().speed,0),b2body.getWorldCenter(),false);
         }else{
             defineFireBall(((player.getX()-player.getWidth()*0.2f))*GameMain.PPM,
-                    (player.getY()+player.getHeight()*0.7f)*GameMain.PPM);
-            b2body.applyLinearImpulse(new Vector2(-10,0),b2body.getWorldCenter(),false);
+                    (player.getY()+player.getHeight()*0.7f)*GameMain.PPM, player.getArm().dimension);
+            b2body.applyLinearImpulse(new Vector2(-player.getArm().speed,0),b2body.getWorldCenter(),false);
         }
 
         setBounds(0,0,8/ GameMain.PPM, 8/GameMain.PPM);
@@ -57,14 +57,14 @@ public class FireBall extends Sprite {
 
     }
 
-    public void defineFireBall(float x, float y){
+    public void defineFireBall(float x, float y, int dimension){
         BodyDef bdef = new BodyDef();
         bdef.position.set(x/ GameMain.PPM,y/ GameMain.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
         FixtureDef fixdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(4/ GameMain.PPM,4/ GameMain.PPM);
+        shape.setAsBox(dimension / 2 / GameMain.PPM, dimension / 2 / GameMain.PPM);
         fixdef.filter.categoryBits = GameMain.FIREBALL_BIT;
         fixdef.filter.maskBits = GameMain.GROUND_BIT | GameMain.PLAYER_BIT | GameMain.WALL_BIT;
         fixdef.shape = shape;

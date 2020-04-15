@@ -195,7 +195,8 @@ public class GameScreen implements Screen{
 				object.put("state", player.currentState);
 				object.put("direction", player.getDirectionR());
 				object.put("life", player.getLife());
-				gameMain.server.getSocket().emit("playerMoved", object);
+				object.put("arm", player.getArm());
+				gameMain.server.getSocket().emit("updatePlayer", object);
 				timeUpdateServer = 0f;
 				
 			} catch (JSONException e) {
