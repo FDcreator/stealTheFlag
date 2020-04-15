@@ -57,6 +57,13 @@ public class ServerManagement {
 					object.put("state", myPlayer.getState().toString());
 					object.put("direction", myPlayer.getDirectionR());
 					object.put("life", myPlayer.getLife());
+					
+					JSONObject armObject = new JSONObject();
+					armObject.put("name", myPlayer.getArm());
+					armObject.put("countBullet", myPlayer.getCountBullet());
+					armObject.put("countRechargeBullet", myPlayer.getCountRechargeBullet());
+					object.put("arm", armObject);
+					
 					Gdx.app.log("connect", "" + myPlayer.getState().toString());
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -120,6 +127,15 @@ public class ServerManagement {
 							boolean direction = objects.getJSONObject(i).getBoolean("direction");
 							player.setDirectionR(direction);
 							player.setLife(objects.getJSONObject(i).getInt("life"));
+							player.setArm(Player.Arm.valueOf(
+									( (JSONObject) objects.getJSONObject(i).getJSONObject("arm")).getString("name") 
+									));
+							player.setCountBullet(
+									( (JSONObject) objects.getJSONObject(i).getJSONObject("arm")).getInt("countBullet") 
+									);
+							player.setCountRechargeBullet(
+									( (JSONObject) objects.getJSONObject(i).getJSONObject("arm")).getInt("countRechargeBullet")
+									);
 							
 							userPlayers.put(objects.getJSONObject(i).getString("id"), player);
 							Gdx.app.log("GETPLAYERS", "id: " + objects.getJSONObject(i).getString("id") );
@@ -147,13 +163,20 @@ public class ServerManagement {
 					String state = data.getString("state");
 					boolean direction = data.getBoolean("direction");
 					int life = data.getInt("life");
-					String arm = data.getString("arm");
 					if ( userPlayers.get(playerId) != null ) {
 						userPlayers.get(playerId).setPosition(new Vector2(x, y));
 						userPlayers.get(playerId).currentState = Player.State.valueOf(state);
 						userPlayers.get(playerId).setDirectionR(direction);
 						userPlayers.get(playerId).setLife(life);
-						userPlayers.get(playerId).setArm( Player.Arm.valueOf(arm));
+						userPlayers.get(playerId).setArm(Player.Arm.valueOf(
+								( (JSONObject) data.getJSONObject("arm")).getString("name") 
+								));
+						userPlayers.get(playerId).setCountBullet(
+								( (JSONObject) data.getJSONObject("arm")).getInt("countBullet") 
+								);
+						userPlayers.get(playerId).setCountRechargeBullet(
+								( (JSONObject) data.getJSONObject("arm")).getInt("countRechargeBullet")
+								);
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block

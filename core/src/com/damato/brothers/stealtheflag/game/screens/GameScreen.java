@@ -195,7 +195,11 @@ public class GameScreen implements Screen{
 				object.put("state", player.currentState);
 				object.put("direction", player.getDirectionR());
 				object.put("life", player.getLife());
-				object.put("arm", player.getArm());
+				JSONObject armObject = new JSONObject();
+				armObject.put("name", player.getArm());
+				armObject.put("countBullet", player.getCountBullet());
+				armObject.put("countRechargeBullet", player.getCountRechargeBullet());
+				object.put("arm", armObject);
 				gameMain.server.getSocket().emit("updatePlayer", object);
 				timeUpdateServer = 0f;
 				

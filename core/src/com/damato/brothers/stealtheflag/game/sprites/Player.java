@@ -101,14 +101,6 @@ public class Player extends Sprite {
             }
         }
         
-        if ( Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-        	switch(arm) {
-        		case PISTOL:  arm = Arm.SUB; break;
-        		case SUB: arm = Arm.BAZOOKA; break;
-        		case BAZOOKA: arm = Arm.PISTOL; break;
-        	}
-        }
-        
         if ( Gdx.input.isKeyJustPressed(Input.Keys.C)) {
         	Gdx.app.log("ARM", countBullet + "/" + countRechargeBullet);
         }
@@ -238,13 +230,13 @@ public class Player extends Sprite {
     public void updateShooting() {
     	if ( currentState == Player.State.SHOOTING ) {
     		fire();
-    		Gdx.app.log("Player", "SHOOTING");
+    		//Gdx.app.log("Player", "SHOOTING");
     	}
     }
     
     public void drawLife() {
     	float width = ( getWidth() * 2 ) * (getLife() / 100f);
-    	Gdx.app.log("PLAYER", "life: " + life);
+    	//Gdx.app.log("PLAYER", "life: " + life);
     	float height = 10 / GameMain.PPM;
     	
     	renderer.begin(ShapeType.Line);
@@ -296,6 +288,22 @@ public class Player extends Sprite {
     
     public void setArm(Arm arm) {
 		this.arm = arm;
+	}
+    
+    public int getCountBullet() {
+		return countBullet;
+	}
+    
+    public void setCountBullet(int countBullet) {
+		this.countBullet = countBullet;
+	}
+    
+    public int getCountRechargeBullet() {
+		return countRechargeBullet;
+	}
+    
+    public void setCountRechargeBullet(int countRechargeBullet) {
+		this.countRechargeBullet = countRechargeBullet;
 	}
     
     public int getDamage() {

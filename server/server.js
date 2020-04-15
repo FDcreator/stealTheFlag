@@ -59,5 +59,9 @@ function Player(id, x, y, state, direction, life, arm) {
 	this.state = state;
 	this.direction = direction;
 	this.life = life;
-	this.arm = arm;
+	this.arm = {
+			name: arm.name,
+			countBullet: arm.countBullet,
+			countRechargeBullet: arm.countRechargeBullet
+	};
 }
