@@ -59,7 +59,7 @@ public class B2dWorldCreator {
         for (MapObject object : map.getLayers().get("flags").getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             flags.add(new Flag(gameScreen,
-                    (rectangle.getX() + rectangle.getWidth())/2,
+                    (rectangle.getX() + rectangle.getWidth()/2),
                     (rectangle.getY() + rectangle.getHeight()/2),
                     object.getName()));
         }
