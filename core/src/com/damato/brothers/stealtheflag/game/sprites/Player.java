@@ -59,6 +59,9 @@ public class Player extends Sprite {
 
     private boolean walkRight;
     private boolean walkLeft;
+
+    private String color;
+
     private Array<FireBall> fireBalls;
     
     private ShapeRenderer renderer;
@@ -79,8 +82,7 @@ public class Player extends Sprite {
         //isHit e shot talvez não sejam utilizados (BR-F)
         isHit = false;
         shot = false;
-        position = new Vector2(96, 256);
-        
+        position = new Vector2(4016, 256);
 
         fireBalls = new Array<FireBall>();
 
@@ -142,7 +144,8 @@ public class Player extends Sprite {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(28/ GameMain.PPM,28/ GameMain.PPM);
         fixdef.filter.categoryBits = GameMain.PLAYER_BIT;
-        fixdef.filter.maskBits = GameMain.GROUND_BIT | GameMain.WALL_BIT | GameMain.FIREBALL_BIT;
+        fixdef.filter.maskBits = GameMain.GROUND_BIT | GameMain.WALL_BIT | GameMain.FIREBALL_BIT
+        | GameMain.FLAG_BIT;
         fixdef.shape = shape;
 
         b2body.createFixture(fixdef).setUserData(this);

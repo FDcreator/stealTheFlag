@@ -3,6 +3,8 @@ package com.damato.brothers.stealtheflag.game.screens;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.badlogic.gdx.utils.Array;
+import com.damato.brothers.stealtheflag.game.sprites.Flag;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -80,6 +82,7 @@ public class GameScreen implements Screen{
 		world.setContactListener(new WorldContactListener());
 
 		player = new Player(this);
+
 		gameMain.server.connectServer(this, player);
 	}
 	@Override

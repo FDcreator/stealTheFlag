@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.damato.brothers.stealtheflag.game.GameMain;
 import com.damato.brothers.stealtheflag.game.sprites.FireBall;
+import com.damato.brothers.stealtheflag.game.sprites.Flag;
 import com.damato.brothers.stealtheflag.game.sprites.Player;
 
 public class WorldContactListener implements ContactListener {
@@ -51,6 +52,10 @@ public class WorldContactListener implements ContactListener {
                     }
                     System.out.println("damage: " + fireBall.getPlayer().getDamage());
                 }
+                break;
+
+            case GameMain.PLAYER_BIT | GameMain.FLAG_BIT:
+
                 break;
         }
     }

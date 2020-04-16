@@ -5,11 +5,14 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.damato.brothers.stealtheflag.game.GameMain;
 import com.damato.brothers.stealtheflag.game.screens.GameScreen;
+import com.damato.brothers.stealtheflag.game.sprites.Flag;
 
 public class B2dWorldCreator {
 
+    private Array<Flag> flags;
     public B2dWorldCreator(GameScreen gameScreen){
         World world = gameScreen.getWorld();
         TiledMap map = gameScreen.getMap();
@@ -23,6 +26,7 @@ public class B2dWorldCreator {
         //corpo à ser adicionado ao mundo
         Body body;
 
+        flags = new Array<Flag>();
         //para todos object no layer (chão) que tenha tipo de retângulo faça
         for (MapObject object : map.getLayers().get("grounds").getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
@@ -52,5 +56,16 @@ public class B2dWorldCreator {
             fixdef.filter.categoryBits = GameMain.WALL_BIT;
             body.createFixture(fixdef);
         }
+        for (MapObject object : map.getLayers().get("flags").getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+            flags.add(new Flag(gameScreen,
+                    (rectangle.getX() + rectangle.getWidth())/2,
+                    (rectangle.getY() + rectangle.getHeight()/2),
+                    object.getName()));
+        }
+    }
+
+    public Array<Flag> getFlags(){
+        return flags;
     }
 }
